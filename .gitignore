@@ -1,2 +1,6 @@
 /WEBPAGES_RAW
 .DS_Store
+.vscode/settings.json
+__pycache__/
+*.pyc[cod]
+*.pyo
