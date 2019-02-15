@@ -31,7 +31,6 @@ def main():
             print("*"*10,item)
 
 
-
 if __name__ == '__main__':
     main()
 
