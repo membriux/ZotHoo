@@ -2,7 +2,7 @@
 # Directories
 /WEBPAGES_RAW
 /venv
-
+.idea/
 .DS_Store
 .vscode/settings.json
 
