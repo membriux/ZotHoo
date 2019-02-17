@@ -20,8 +20,10 @@ def main():
             to_parse = read_directory(full_subdir)
 
             for _file in to_parse:
-                toks = tokenizer.counter_tokenize(parse(_file))
-                print(toks)
+                parsed_txt = parse(_file)
+                token_counter = tokenizer.counter_tokenize(parsed_txt)
+                for tok in token_counter:
+                    print(tok)
 
 
 
