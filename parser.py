@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup as bs
     Methods: counter, tokenizer
 
 """
-
+invalid_files = []
 
 invalid_tags = ['style', 'script', 'a', 'meta',
                 'link', 'ul', 'li', 'table', 'td',
@@ -18,19 +18,22 @@ invalid_tags = ['style', 'script', 'a', 'meta',
 html_parser = 'html.parser'
 
 
-def parse(file) -> [str]:
+def parse(_file) -> str:
     all_text = ''
     # Open file and read it using bs4
-    with open(file) as f:
-        soup = bs(f, html_parser)
+    try:
+        with open(_file, 'r', encoding="utf-8") as f:
+            soup = bs(f, html_parser)
+            # Remove unnecessary text from file
+            for i in invalid_tags:
+                while soup.find(i) is not None:
+                    soup.find(i).decompose()
 
-        # Remove unnecessary text from file
-        for i in invalid_tags:
-            while soup.find(i) is not None:
-                soup.find(i).decompose()
-
-        all_text += soup.get_text()
-        return all_text
+            all_text += soup.get_text()
+    except Exception as _:
+        invalid_files.append(_file)
+    
+    return all_text
 
 
 if __name__ == '__main__':
