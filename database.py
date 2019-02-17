@@ -12,6 +12,8 @@ def test_db_connection():
     print('DB: Databases:', client.list_database_names())
     print('DB: testing connection')
     url_cols = db['URLs']
+    url_cols.insert_one({"Token" : "lol", 'Docs': {'Doc1': 3, 'Doc2': 5}})
+    
     for col_item in url_cols.find():
         print(col_item)
 

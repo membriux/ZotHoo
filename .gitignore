@@ -10,3 +10,4 @@ __pycache__/
 *.pyc[cod]
 *.pyo
 webpages.zip
+subsample/

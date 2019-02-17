@@ -10,6 +10,7 @@ class Tokenizer():
 
     @staticmethod
     def normalize_text(corpus : str):
+        temp = re.sub(r"(\\n|\\t|\\r)", ' ', corpus)  # srip newlines
         temp = re.sub(r"([^ \sa-zA-Z0-9])", ' ', corpus).lower()  # srip non ascii
         temp = re.sub(r"( +)", ' ', temp).strip()     # remove extra spaces
         return temp
