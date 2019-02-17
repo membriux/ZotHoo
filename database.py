@@ -12,7 +12,7 @@ token_col = db['Tokens']
 def test_db_connection():
     print('DB: Databases:', client.list_database_names())
     print('DB: Testing connection...')
-    print('DB: Database OK')
+    print('DB: OK')
 
 
 def create_table():
