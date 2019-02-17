@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup as bs
 
 """
     Methods: counter, tokenizer
-
 """
 invalid_files = []
 
@@ -19,12 +18,13 @@ html_parser = 'html.parser'
 
 
 def parse(_file) -> str:
+    """
+    Open file and read it using bs4
+    """
     all_text = ''
-    # Open file and read it using bs4
     try:
         with open(_file, 'r', encoding="utf-8") as f:
             soup = bs(f, html_parser)
-            # Remove unnecessary text from file
             for i in invalid_tags:
                 while soup.find(i) is not None:
                     soup.find(i).decompose()
