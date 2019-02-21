@@ -30,9 +30,7 @@
                 <div class="col">
                     {% if search%} <small class="text-secondary"> Search for: <b>{{search}}</b> </small> {%endif%}
                     {% for r in results: %}
-                        <h3> {{r}}</h3>
-
-
+                        <a href="{{r}}"><h4>{{r}}</h4></a>
                     {% endfor %}
                 </div>
             </div>
