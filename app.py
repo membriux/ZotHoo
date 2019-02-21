@@ -9,7 +9,7 @@ from indexer import read_directory
 from parser import parse
 import config
 
-Index = OrderedDict()
+Index = dict()
 
 def build_index():
     global Index
@@ -34,14 +34,10 @@ def main():
     # client.drop_database("ICSdatabase")
     # db = client['ICSdatabase']
     build_index()
-    for i, (key, value) in enumerate(Index.items()):
+    for i, (key, value) in enumerate(sorted(Index.items(), reverse=False)):
         print("[{}] {}\t{}".format(i, key, value))
         if i == 100:
             break
-    
-
-    
-
 
 
 if __name__ == '__main__':
