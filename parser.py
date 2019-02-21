@@ -38,5 +38,5 @@ def parse(_file) -> str:
 
 if __name__ == '__main__':
     file = config.RAW_WEBPAGES + '/2/55'
-    print(parse(file))m
+    print(parse(file))
 
