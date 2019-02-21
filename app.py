@@ -39,7 +39,6 @@ def main():
         if i == 100:
             break
 
-
 if __name__ == '__main__':
     main()
 

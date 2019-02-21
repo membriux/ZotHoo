@@ -11,3 +11,4 @@ __pycache__/
 *.pyo
 webpages.zip
 config.py
+WEBPAGES_CLEAN/
