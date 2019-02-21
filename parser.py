@@ -23,18 +23,18 @@ def parse(_file) -> str:
         with open(_file, 'r', encoding="utf-8") as f:
             soup = bs(f, html_parser)
             # Remove unnecessary text from file
-            for i in valid_tags:
-                while soup.find(i) is not None:
-                    soup.find(i).decompose()
+            for tag in valid_tags:
+                soup.find_all(tag)
 
             all_text += soup.get_text()
     except Exception as _:
+        print('invalid')
         invalid_files.append(_file)
     
     return all_text
 
 
 if __name__ == '__main__':
-    file = config.RAW_WEBPAGES + '/2/55'
+    file = config.RAW_WEBPAGES + '/2/10'
     print(parse(file))
 
