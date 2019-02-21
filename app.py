@@ -14,15 +14,13 @@ Index = OrderedDict()
 def build_index():
     global Index
     tokenizer = Tokenizer()
-    for subdir in tqdm(os.listdir(config.RAW_WEBPAGES)):
-        # print("subdir", subdir)
+    for subdir in os.listdir(config.RAW_WEBPAGES):
         full_subdir = os.path.join(config.RAW_WEBPAGES, subdir)
         if os.path.isdir(full_subdir):
             to_parse = read_directory(full_subdir)
-
-            for _file in to_parse:
+            print("Subdirectory: ", subdir)
+            for _file in tqdm(to_parse):
                 filename = "/".join(_file.split("/")[1:])
-                # print("filename", filename)
                 parsed_txt = parse(_file)
                 token_counter = tokenizer.counter_tokenize(parsed_txt)
                 for tok in token_counter:
