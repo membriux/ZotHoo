@@ -21,7 +21,7 @@ class Tokenizer():
     def counter_tokenize(self, corpus : str, stem=False):
         corpus = self.normalize_text(corpus).split(' ')
         if self.stemmer: corpus = [self.stemmer.stem(word) for word in corpus]
-        return Counter((word for word in corpus if word not in self.stop_words and len(word) > 1) )
+        return Counter((word for word in corpus if word not in self.stop_words and len(word) > 1))
 
 
         

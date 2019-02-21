@@ -28,7 +28,7 @@ def parse(_file) -> str:
 
             all_text += soup.get_text()
     except Exception as _:
-        print('invalid')
+        print('invalid: ', _file)
         invalid_files.append(_file)
     
     return all_text
