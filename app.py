@@ -29,10 +29,6 @@ def build_index():
                     else:
                         Index[tok][filename] = token_counter[tok]
 
-        
-
-
-
 def main():
     # client = pymongo.MongoClient('mongodb://localhost:27017/')
     # client.drop_database("ICSdatabase")
