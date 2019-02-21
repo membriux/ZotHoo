@@ -1,46 +1,57 @@
-from flask import Flask, url_for, render_template, request
-import json
+import os
+import pymongo
+from tqdm import tqdm
+
+from collections import OrderedDict
+from tokenizer import Tokenizer
+from indexer import read_directory
+from parser import parse
 import config
 import pprint
+import json
+
+Index = dict()
+
+
 
 pp = pprint.PrettyPrinter()
 
-app = Flask(__name__)
+def build_index():
+    global Index
+    tokenizer = Tokenizer()
+    for subdir in os.listdir(config.RAW_WEBPAGES):
+        full_subdir = os.path.join(config.RAW_WEBPAGES, subdir)
+        if os.path.isdir(full_subdir):
+            to_parse = read_directory(full_subdir)
+            print("Subdirectory: ", subdir)
+            for _file in tqdm(to_parse):
+                filename = "/".join(_file.split("/")[1:])
+                parsed_txt = parse(_file)
+                token_counter = tokenizer.counter_tokenize(parsed_txt)
+                for tok in token_counter:
+                    if tok not in Index:
+                        Index[tok] = { filename : token_counter[tok]}
+                    else:
+                        Index[tok][filename] = token_counter[tok]
 
-index = dict()
-bookkeeping = dict()
-total_tokens = 0
-total_links = 0
-
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    global index, bookkeeping, total_tokens, total_links
-    load_index()
-    if request.method == 'POST' and request.form['search_input'] != '':
-        search_input = request.form['search_input']
-        results = run_search(search_input)
-        return render_template('index.html',
-                               results=results, search=search_input,
-                               links=total_links, tokens=total_tokens)
-    else:
-        return render_template('index.html')
-
-
-def run_search(search_input):
-    global total_tokens, total_links
-    total_links = len(index[search_input])
-    total_tokens = sum([count for count in index[search_input].values()])
-    return [bookkeeping[u] for u in sorted(index[search_input], key=index[search_input].__getitem__, reverse=True)]
+    save_index()
 
 
-def load_index():
-    global index, bookkeeping
-    with open('index.json', 'r') as data:
-         index = json.load(data)
-
-    with open(config.BOOKKEEPING, 'r') as data:
-         bookkeeping = json.load(data)
+def save_index():
+    with open('index.json', 'w') as j:
+        json.dump(Index, j, sort_keys=True, indent=4)
 
 
 
+
+def main():
+    # client = pymongo.MongoClient('mongodb://localhost:27017/')
+    # client.drop_database("ICSdatabase")
+    # db = client['ICSdatabase']
+    build_index()
+
+    # pp.pprint(Index)
+
+
+if __name__ == '__main__':
+    main()
