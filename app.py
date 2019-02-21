@@ -8,8 +8,14 @@ from tokenizer import Tokenizer
 from indexer import read_directory
 from parser import parse
 import config
+import pprint
+import json
 
 Index = dict()
+
+
+
+pp = pprint.PrettyPrinter()
 
 def build_index():
     global Index
@@ -29,15 +35,23 @@ def build_index():
                     else:
                         Index[tok][filename] = token_counter[tok]
 
+    save_index()
+
+
+def save_index():
+    with open('index.json', 'w') as j:
+        json.dump(Index, j, sort_keys=True, indent=4)
+
+
+
+
 def main():
     # client = pymongo.MongoClient('mongodb://localhost:27017/')
     # client.drop_database("ICSdatabase")
     # db = client['ICSdatabase']
     build_index()
-    for i, (key, value) in enumerate(sorted(Index.items(), reverse=False)):
-        print("[{}] {}\t{}".format(i, key, value))
-        if i == 100:
-            break
+
+    # pp.pprint(Index)
 
 if __name__ == '__main__':
     main()

@@ -27,11 +27,16 @@ def parse(_file) -> str:
                 soup.find_all(tag)
 
             all_text += soup.get_text()
+            all_text = remove_invalids(all_text)
     except Exception as _:
         print('invalid: ', _file)
         invalid_files.append(_file)
     
     return all_text
+
+
+def remove_invalids(string):
+    return ''.join([c if ord(c) < 128 else ' ' for c in string])
 
 
 if __name__ == '__main__':
