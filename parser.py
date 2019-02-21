@@ -11,9 +11,7 @@ from bs4 import BeautifulSoup as bs
 """
 invalid_files = []
 
-invalid_tags = ['style', 'script', 'a', 'meta',
-                'link', 'ul', 'li', 'table', 'td',
-                'select', 'option', 'tr', 'form']
+valid_tags = ['body', 'title', 'h1', 'h2', 'h3', 'strong', 'b']
 
 html_parser = 'html.parser'
 
@@ -25,7 +23,7 @@ def parse(_file) -> str:
         with open(_file, 'r', encoding="utf-8") as f:
             soup = bs(f, html_parser)
             # Remove unnecessary text from file
-            for i in invalid_tags:
+            for i in valid_tags:
                 while soup.find(i) is not None:
                     soup.find(i).decompose()
 
