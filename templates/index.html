@@ -10,6 +10,20 @@
     </head>
     <body>
 
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+
+                    <h1> AntSearch</h1>
+                    <small class="text-left"> Made by Guillermo and Eduardo</small>
+                </div>
+            </div>
+        </div>
+
+
         <div class="container search-section">
             <div class="row">
                 <div class="col">
@@ -24,17 +38,23 @@
                 </div>
             </div>
         </div>
+        
+        {% if search%}
+            <div class="container">
+                <div class="row">
+                    <div class="col">
 
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    {% if search%} <small class="text-secondary"> Search for: <b>{{search}}</b> </small> {%endif%}
-                    {% for r in results: %}
-                        <a href="{{r}}"><h4>{{r}}</h4></a>
-                    {% endfor %}
+                        <small class="text-secondary"> Search for: <b>{{search}}</b> </small> <br>
+                        <small class="text-secondary"> Total Tokens: <b>{{tokens}}</b> </small> <br>
+                        <small class="text-secondary"> Total Links: <b>{{links}}</b> </small> <br>
+
+                        {% for r in results: %}
+                            <h4><a href="{{r}}">{{r}}</a></h4>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {%endif%}
 
 
 
