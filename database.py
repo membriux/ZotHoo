@@ -19,7 +19,11 @@ def create_table():
     """
     To create a table, there must be a value inserted into it.
     """
-    test_token = {'Token': 'Hello_world', 'Documents': [{'doc1': 4}]}
+    test_token = {'Token': 'Hello_world',
+                  'Documents': {
+                      'doc1': 4
+                    }
+                  }
     token_col.insert_one(test_token)
     # print('DB: Inserted test token:', token_col.find_one())
 
