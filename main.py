@@ -11,7 +11,7 @@ def index():
     if request.method == 'POST' and request.form['search_input'] != '':
         search_input = request.form['search_input']
         results = run_search(search_input)
-        return render_template('index.html', results=results)
+        return render_template('index.html', results=results, search=search_input)
     else:
         return render_template('index.html')
 
