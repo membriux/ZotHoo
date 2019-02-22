@@ -18,7 +18,9 @@
                 <div class="col text-center">
 
                     <h1> AntSearch</h1>
-                    <small class="text-left"> Made by Guillermo and Eduardo</small>
+                    <p> Made by Guillermo and Eduardo</p>
+                    <small class="text-secondary"> Num of total tokens: <b>{{all_tokens}}</b> </small> <br>
+                    <small class="text-secondary"> Num of total of documents: <b>{{all_documents}}</b> </small> <br>
                 </div>
             </div>
         </div>
@@ -38,7 +40,7 @@
                 </div>
             </div>
         </div>
-        
+
         {% if search%}
             <div class="container">
                 <div class="row">
@@ -49,7 +51,7 @@
                         <small class="text-secondary"> Total Links: <b>{{links}}</b> </small> <br>
 
                         {% for r in results: %}
-                            <h4><a href="{{r}}">{{r}}</a></h4>
+                            <p><a href="{{r}}">{{r}}</a></p>
                         {% endfor %}
                     </div>
                 </div>
