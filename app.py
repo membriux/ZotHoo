@@ -20,6 +20,8 @@ def index():
     if request.method == 'POST' and request.form['search_input'] != '':
         search_input = request.form['search_input']
         results = run_search(search_input)
+        if len(results) == 0:
+            search_input = 'No results for', search_input
         return render_template('index.html',
                                results=results, search=search_input,
                                links=total_links, tokens=total_tokens)
@@ -29,9 +31,12 @@ def index():
 
 def run_search(search_input):
     global total_tokens, total_links
-    total_links = len(index[search_input])
-    total_tokens = sum([count for count in index[search_input].values()])
-    return [bookkeeping[u] for u in sorted(index[search_input], key=index[search_input].__getitem__, reverse=True)]
+    try:
+        total_links = len(index[search_input])
+        total_tokens = sum([count for count in index[search_input].values()])
+        return [bookkeeping[u] for u in sorted(index[search_input], key=index[search_input].__getitem__, reverse=True)]
+    except KeyError:
+        return []
 
 
 def load_index():
