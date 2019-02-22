@@ -34,9 +34,17 @@ def run_search(search_input):
     try:
         total_links = len(index[search_input])
         total_tokens = sum([count for count in index[search_input].values()])
-        return [bookkeeping[u] for u in sorted(index[search_input], key=index[search_input].__getitem__, reverse=True)]
+        results = [bookkeeping[u] for u in sorted(index[search_input], key=index[search_input].__getitem__, reverse=True)]
+        return top_twenty(results)
     except KeyError:
         return []
+
+
+def top_twenty(results):
+    if len(results) > 20:
+        return results[:20]
+    else:
+        return results
 
 
 def load_index():
