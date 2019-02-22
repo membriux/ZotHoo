@@ -19,8 +19,8 @@
 
                     <h1> AntSearch</h1>
                     <p> Made by Guillermo and Eduardo</p>
-                    <small class="text-secondary"> Num of total tokens: <b>{{all_tokens}}</b> </small> <br>
-                    <small class="text-secondary"> Num of total of documents: <b>{{all_documents}}</b> </small> <br>
+                    <small class="text-secondary"> Num of all tokens: <b>{{all_tokens}}</b> </small> <br>
+                    <small class="text-secondary"> Num of all documents: <b>{{all_documents}}</b> </small> <br>
                 </div>
             </div>
         </div>
@@ -47,8 +47,8 @@
                     <div class="col">
 
                         <small class="text-secondary"> Search for: <b>{{search}}</b> </small> <br>
-                        <small class="text-secondary"> Total Tokens: <b>{{tokens}}</b> </small> <br>
-                        <small class="text-secondary"> Total Links: <b>{{links}}</b> </small> <br>
+                        <small class="text-secondary"> Num of token({{search}}) found: <b>{{tokens}}</b> </small> <br>
+                        <small class="text-secondary"> Num of docs that have {{search}}: <b>{{links}}</b> </small> <br>
 
                         {% for r in results: %}
                             <p><a href="{{r}}">{{r}}</a></p>
