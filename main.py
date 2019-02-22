@@ -36,8 +36,9 @@ def build_index():
 
 
 def save_index():
-    with open('index.json', 'w') as j:
+    with open(config.INDEX_PATH, 'w') as j:
         json.dump(Index, j, sort_keys=True, indent=4)
+    print("[Saved index succesfully on {}]".format(config.INDEX_PATH))
 
 
 

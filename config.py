@@ -1,3 +1,4 @@
-RAW_WEBPAGES = "subsample"
-BOOKKEEPING = "WEBPAGES_RAW/bookkeeping.json"
+RAW_WEBPAGES = "WEBPAGES_CLEAN"
+BOOKKEEPING = "WEBPAGES_CLEAN/bookkeeping.json"
 TOP_N_results = 20
+INDEX_PATH = 'index.json'

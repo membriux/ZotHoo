@@ -43,15 +43,15 @@ def run_search(search_input):
         total_links = len(index[processed_query])
         total_tokens = sum([count for count in index[processed_query].values()])
         tfidf_scores = [(k, tfidf(v, len(index[processed_query]) ) ) for k, v in index[processed_query].items()]
-        print(tfidf_scores)
         return [bookkeeping[u] for u,v in sorted(tfidf_scores, key=lambda x : x[1], reverse=True)][:config.TOP_N_results]
     except KeyError:
+        print("[ERROR] Empty query. Raw: \"{}\", Processed: \"{}\"]".format(search_input, processed_query))
         return []
 
 
 def load_index():
     global index, bookkeeping, N_documents
-    with open('index.json', 'r') as data:
+    with open(config.INDEX_PATH, 'r') as data:
          index = json.load(data)
 
     with open(config.BOOKKEEPING, 'r') as data:
