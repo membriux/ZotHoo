@@ -42,6 +42,7 @@ def load_index():
     with open(config.BOOKKEEPING, 'r') as data:
          bookkeeping = json.load(data)
 
+
 if __name__ == '__main__':
     app.run()
 
