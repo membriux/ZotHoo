@@ -12,8 +12,6 @@ import json
 
 Index = dict()
 
-
-
 pp = pprint.PrettyPrinter()
 
 def build_index():

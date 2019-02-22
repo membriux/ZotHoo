@@ -5,11 +5,14 @@ from nltk.stem.porter import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 
 class Tokenizer():
-    def __init__(self):
+    def __init__(self, token_processing="stem"):
         self.stop_words = set(stopwords.words('english')) 
         self.stop_words.add('')
-        self.stemmer = PorterStemmer()
-        self.lemmatizer = WordNetLemmatizer()
+        self.token_processor = None
+
+        if token_processing == "stem":
+            self.token_processor = PorterStemmer()
+
 
     @staticmethod
     def normalize_text(corpus : str):
@@ -19,8 +22,16 @@ class Tokenizer():
         corpus = re.sub(r"( +)", ' ', corpus).strip()     # remove extra spaces
         return corpus
 
-    def counter_tokenize(self, corpus : str, stem=False):
+    def counter_tokenize(self, corpus : str):
         corpus = self.normalize_text(corpus).split(' ')
-        if self.stemmer: corpus = [self.stemmer.stem(word) for word in corpus]
+        if self.token_processor: corpus = [self.token_processor.stem(word) for word in corpus]
         return Counter((word for word in corpus if word not in self.stop_words and len(word) > 1))
+
+    def tokenize_query(self, query : str):
+        """
+        assuming query is a single token
+        """
+        query = self.normalize_text(query)
+        if self.token_processor: query = self.token_processor.stem(query)
+        return query
 

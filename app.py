@@ -1,4 +1,6 @@
+from math import log10
 from flask import Flask, url_for, render_template, request
+from tokenizer import Tokenizer
 import json
 import config
 import pprint
@@ -11,6 +13,8 @@ index = dict()
 bookkeeping = dict()
 total_tokens = 0
 total_links = 0
+N_documents = None
+tokenizer = Tokenizer()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -28,32 +32,32 @@ def index():
     else:
         return render_template('index.html')
 
+def tfidf(x, N) -> float:
+    return x * log10(N_documents / N)
 
 def run_search(search_input):
     global total_tokens, total_links
     try:
-        total_links = len(index[search_input])
-        total_tokens = sum([count for count in index[search_input].values()])
-        results = [bookkeeping[u] for u in sorted(index[search_input], key=index[search_input].__getitem__, reverse=True)]
-        return top_twenty(results)
+        processed_query = tokenizer.tokenize_query(search_input)
+        print(processed_query)
+        total_links = len(index[processed_query])
+        total_tokens = sum([count for count in index[processed_query].values()])
+        tfidf_scores = [(k, tfidf(v, len(index[processed_query]) ) ) for k, v in index[processed_query].items()]
+        print(tfidf_scores)
+        return [bookkeeping[u] for u,v in sorted(tfidf_scores, key=lambda x : x[1], reverse=True)][:config.TOP_N_results]
     except KeyError:
         return []
 
 
-def top_twenty(results):
-    if len(results) > 20:
-        return results[:20]
-    else:
-        return results
-
-
 def load_index():
-    global index, bookkeeping
+    global index, bookkeeping, N_documents
     with open('index.json', 'r') as data:
          index = json.load(data)
 
     with open(config.BOOKKEEPING, 'r') as data:
          bookkeeping = json.load(data)
+
+    N_documents = len(bookkeeping)
 
 
 if __name__ == '__main__':
