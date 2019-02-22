@@ -2,13 +2,17 @@
 # Directories
 /WEBPAGES_RAW
 /venv
-.idea/
+.idea
 .DS_Store
 .vscode/settings.json
 
 __pycache__/
 *.pyc[cod]
 *.pyo
+*.DS_Store
+*.xml
+*.iml
 webpages.zip
 config.py
 WEBPAGES_CLEAN/
+
