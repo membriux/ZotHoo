@@ -1,5 +1,6 @@
-from math import log10
 from flask import Flask, url_for, render_template, request
+from flask_paginate import Pagination, get_page_args
+from math import log10
 from tokenizer import Tokenizer
 import json
 import config
@@ -12,6 +13,10 @@ app = Flask(__name__)
 index = dict()
 bookkeeping = dict()
 
+search_input = ''
+
+
+total_results = []
 total_tokens = 0
 total_links = 0
 N_documents = None
@@ -22,19 +27,28 @@ tokenizer = Tokenizer()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global index, bookkeeping, total_tokens, total_links
+    global search_input, index, bookkeeping, total_tokens, total_links
+
     if request.method == 'POST' and request.form['search_input'] != '':
         search_input = request.form['search_input']
-        results = run_search(search_input)
-        if len(results) == 0:
+        run_search(search_input)
+        if len(total_results) == 0:
             search_input = 'No results for', search_input
-        return render_template('index.html',
-                               results=results, search=search_input,
-                               links=total_links, tokens=total_tokens,
-                               all_tokens=N_tokens, all_documents=N_documents)
-    else:
-        return render_template('index.html',
-                               all_tokens=N_tokens, all_documents=N_documents)
+
+    total = len(total_results)
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    pagination_links = get_results(offset=offset, per_page=per_page)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+
+    return render_template('index.html',search=search_input,
+                           links=total_links, tokens=total_tokens,
+                           all_tokens=N_tokens, all_documents=N_documents,
+                           results=pagination_links, per_page=per_page,
+                           page=page, pagination=pagination)
+
+
+def get_results(offset=0, per_page=10):
+    return total_results[offset: offset + per_page]
 
 
 def tfidf(x, N) -> float:
@@ -42,16 +56,16 @@ def tfidf(x, N) -> float:
 
 
 def run_search(search_input):
-    global total_tokens, total_links
+    global total_tokens, total_links, total_results
     try:
         processed_query = tokenizer.tokenize_query(search_input)
         results = set()
         for query in processed_query:
-            links = len(index[query])
-            total_tokens = sum([count for count in index[query].values()])
+            total_links += len(index[query])
+            total_tokens += sum([count for count in index[query].values()])
             tfidf_scores = [(k, tfidf(v, len(index[query]) ) ) for k, v in index[query].items()]
             results.add((i for i in tfidf_scores))
-        return [bookkeeping[u] for u, v in sorted(tfidf_scores, key=lambda x: x[1], reverse=True)][:config.TOP_N_results]
+        total_results = [bookkeeping[u] for u, v in sorted(tfidf_scores, key=lambda x: x[1], reverse=True)][:config.TOP_N_results]
 
     except KeyError:
         print("[ERROR] Empty query. Raw: \"{}\", Processed: \"{}\"]".format(search_input, processed_query))
@@ -72,6 +86,4 @@ def load_index():
 
 if __name__ == '__main__':
     load_index()
-    app.run()
-
-
+    app.run(debug=True)

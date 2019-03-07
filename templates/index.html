@@ -17,8 +17,12 @@
             <div class="row">
                 <div class="col text-center">
 
-                    <h1> AntSearch</h1>
-                    <p> Made by Guillermo and Eduardo</p>
+                    <img src="{{ url_for('static', filename='imgs/petr1.png') }}" alt="AntSearch Logo" style="height:140px; float:left">
+                    <img src="{{ url_for('static', filename='imgs/petr1.png') }}" alt="AntSearch Logo" style="height:140px; float:right">
+                    <h1> Zotgle </h1>
+                    <p> Made by Guillermo and Eduardo </p>
+                    <small class="text-secondary"> Logo credits:<a href="https://www.reddit.com/user/petr_asseatr"> UCI reddit user </a></small>
+                    <br>
                     <small class="text-secondary"> Num of all tokens: <b>{{all_tokens}}</b> </small> <br>
                     <small class="text-secondary"> Num of all documents: <b>{{all_documents}}</b> </small> <br>
                 </div>
@@ -42,20 +46,46 @@
         </div>
 
         {% if search%}
-            <div class="container">
+
+        <div class="container">
+            <small class="text-secondary" style="margin-right: 40px;"> Search for: <b>{{search}}</b> </small>
+            <small class="text-secondary" style="margin-right: 40px;" > Num of token({{search}}) found: <b>{{tokens}}</b> </small>
+            <small class="text-secondary"> Num of docs that have {{search}}: <b>{{links}}</b> </small>
+            {{ pagination.links }}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Documents</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in results %}
+                        <tr>
+                            <td>{{ loop.index + (page - 1) * per_page }}</td>
+                            <td> <a href="{{ r }}">{{ r }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {{ pagination.links }}
+        </div>
+
+
+            <!-- <div class="container">
                 <div class="row">
                     <div class="col">
 
-                        <small class="text-secondary"> Search for: <b>{{search}}</b> </small> <br>
-                        <small class="text-secondary"> Num of token({{search}}) found: <b>{{tokens}}</b> </small> <br>
-                        <small class="text-secondary"> Num of docs that have {{search}}: <b>{{links}}</b> </small> <br>
+
 
                         {% for r in results: %}
                             <p><a href="{{r}}">{{r}}</a></p>
                         {% endfor %}
                     </div>
                 </div>
-            </div>
+            </div> -->
         {%endif%}
 
 
