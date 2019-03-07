@@ -22,7 +22,7 @@
                     <img src="{{ url_for('static', filename='imgs/petr1.png') }}" alt="AntSearch Logo" style="height:140px; float:right">
                     <h1> ZotHoo! </h1>
                     <p> Made by Guillermo and Eduardo </p>
-                    <small class="text-secondary"> Logo credits:<a href="https://www.reddit.com/user/petr_asseatr"> UCI reddit user </a></small>
+                    <small class="text-secondary"> Logo credits:<a href="https://www.reddit.com/user/petr_asseatr"> Reddit user </a></small>
                     <br>
                     <small class="text-secondary"> Num of all tokens: <b>{{all_tokens}}</b> </small> <br>
                     <small class="text-secondary"> Num of all documents: <b>{{all_documents}}</b> </small> <br>
@@ -58,20 +58,25 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Documents</th>
+                            <th>Document</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for r in results %}
+                        {% for d in results %}
                         <tr>
                             <td>{{ loop.index + (page - 1) * per_page }}</td>
-                            <td> <a href="{{ r }}">{{ r }}</a></td>
+                            <td>
+
+                                <h5> {{ d.heading }} </h5>
+                                <small> <a href="{{ d.url }}">{{ d.url }}</a> </small>
+
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-            {{ pagination.links }}
+            <!-- {{ pagination.links }} -->
         </div>
 
 

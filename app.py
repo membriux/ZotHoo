@@ -2,6 +2,7 @@ from flask import Flask, url_for, render_template, request
 from flask_paginate import Pagination, get_page_args
 from math import log10
 from tokenizer import Tokenizer
+import models.document as D
 import json
 import config
 import pprint
@@ -47,8 +48,9 @@ def index():
                            page=page, pagination=pagination)
 
 
-def get_results(offset=0, per_page=10):
-    return total_results[offset: offset + per_page]
+def get_results(offset=0, per_page=5):
+    current_docs = total_results[offset: offset + per_page]
+    return [D.Document(d) for d in current_docs]
 
 
 def tfidf(x, N) -> float:
@@ -66,7 +68,6 @@ def run_search(search_input):
             tfidf_scores = [(k, tfidf(v, len(index[query]) ) ) for k, v in index[query].items()]
             results.add((i for i in tfidf_scores))
         total_results = [bookkeeping[u] for u, v in sorted(tfidf_scores, key=lambda x: x[1], reverse=True)][:config.TOP_N_results]
-
     except KeyError:
         print("[ERROR] Empty query. Raw: \"{}\", Processed: \"{}\"]".format(search_input, processed_query))
         return []
