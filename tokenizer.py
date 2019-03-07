@@ -32,6 +32,7 @@ class Tokenizer():
         assuming query is a single token
         """
         query = self.normalize_text(query)
-        if self.token_processor: query = self.token_processor.stem(query)
+        query = query.split(' ')
+        if self.token_processor: query = [self.token_processor.stem(q) for q in query]
         return query
 

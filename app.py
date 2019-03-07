@@ -45,11 +45,14 @@ def run_search(search_input):
     global total_tokens, total_links
     try:
         processed_query = tokenizer.tokenize_query(search_input)
-        print(processed_query)
-        total_links = len(index[processed_query])
-        total_tokens = sum([count for count in index[processed_query].values()])
-        tfidf_scores = [(k, tfidf(v, len(index[processed_query]) ) ) for k, v in index[processed_query].items()]
+        results = set()
+        for query in processed_query:
+            links = len(index[query])
+            total_tokens = sum([count for count in index[query].values()])
+            tfidf_scores = [(k, tfidf(v, len(index[query]) ) ) for k, v in index[query].items()]
+            results.add((i for i in tfidf_scores))
         return [bookkeeping[u] for u, v in sorted(tfidf_scores, key=lambda x: x[1], reverse=True)][:config.TOP_N_results]
+
     except KeyError:
         print("[ERROR] Empty query. Raw: \"{}\", Processed: \"{}\"]".format(search_input, processed_query))
         return []
