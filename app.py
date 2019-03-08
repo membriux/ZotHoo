@@ -75,12 +75,12 @@ def run_search(search_input):
 
 
 def load_Index():
-    global Index, bookkeeping, N_documents, N_tokens
+    global Index, Header, bookkeeping, N_documents, N_tokens
     with open(config.INDEX_PATH, 'r') as data:
         Index = json.load(data)
 
-    with open(config.HEADER_PATH, 'r') as data:
-        Header = json.load(data)
+    # with open(config.HEADER_PATH, 'r') as data:
+    #     Header = json.load(data)
 
     with open(config.BOOKKEEPING, 'r') as data:
         bookkeeping = json.load(data)

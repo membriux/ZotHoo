@@ -33,11 +33,13 @@ def parse(_file) -> str:
 
             all_text += soup.get_text()
             all_text = remove_invalids(all_text)
-    except Exception as _:
+            
+    except Exception as e:
         print('invalid: ', _file)
         invalid_files.append(_file)
+        raise e
 
-    return all_text
+    return header, all_text
 
 def get_header(soup):
         if soup.find('h1') != None:
