@@ -3,6 +3,7 @@
 import config
 import os
 from bs4 import BeautifulSoup as bs
+import re
 # use folder 2, file 55
 
 """
@@ -48,10 +49,12 @@ def get_header(soup):
     elif soup.find('title') != None and 'Facebook' in soup.find('title').get_text():
         return soup.find('title').get_text()
     elif soup.find('body') != None:
-        header = re.sub('\s+', '', soup.findChildren('body')[0].get_text())
+        s = soup.findChildren('body')[0].get_text()
+        header = re.sub('\s+', '', s)
         return header[0:48]
     else:
-        header = re.sub('\s+', '', soup.findChildren('body')[0].get_text())
+        s = soup.get_text()
+        header = re.sub('\s+', '', s)
         return header[0:48]
 
 
