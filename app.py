@@ -1,10 +1,12 @@
 from flask import Flask, url_for, render_template, request
 from flask_paginate import Pagination, get_page_args
 from math import log10
-from tokenizer import Tokenizer
-import models.document as D
-import json
+
+from src.tokenizer import Tokenizer
+from src.document import Document
 import config
+
+import json
 import pprint
 
 pp = pprint.PrettyPrinter()
@@ -50,8 +52,8 @@ def index():
 
 
 def get_results(offset=0, per_page=5):
-    current_docs = total_results[offset: offset + per_page]
-    return [D.Document(d) for d in current_docs]
+    return total_results[offset: offset + per_page]
+    
 
 
 def tfidf(x, N) -> float:
@@ -68,7 +70,7 @@ def run_search(search_input):
             total_tokens += sum([count for count in Index[query].values()])
             tfidf_scores = [(k, tfidf(v, len(Index[query]) ) ) for k, v in Index[query].items()]
             results.add((i for i in tfidf_scores))
-        total_results = [bookkeeping[u] for u, v in sorted(tfidf_scores, key=lambda x: x[1], reverse=True)][:config.TOP_N_results]
+        total_results = [Document(bookkeeping[u], Header[u]) for u, v in sorted(tfidf_scores, key=lambda x: x[1], reverse=True)][:config.TOP_N_results]
     except KeyError:
         print("[ERROR] Empty query. Raw: \"{}\", Processed: \"{}\"]".format(search_input, processed_query))
         return []
@@ -79,8 +81,8 @@ def load_Index():
     with open(config.INDEX_PATH, 'r') as data:
         Index = json.load(data)
 
-    # with open(config.HEADER_PATH, 'r') as data:
-    #     Header = json.load(data)
+    with open(config.HEADER_PATH, 'r') as data:
+        Header = json.load(data)
 
     with open(config.BOOKKEEPING, 'r') as data:
         bookkeeping = json.load(data)

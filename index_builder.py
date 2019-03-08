@@ -3,9 +3,9 @@ import pymongo
 from tqdm import tqdm
 
 from collections import OrderedDict
-from tokenizer import Tokenizer
-from indexer import read_directory
-from parser import parse
+from src.tokenizer import Tokenizer
+from src.indexer import read_directory
+from src.parser import parse
 import config
 import pprint
 import json
