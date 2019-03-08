@@ -40,9 +40,6 @@ def parse(_file) -> str:
     return all_text
 
 def get_header(soup):
-        result = requests.get('http://' + self.url)
-        c = result.content
-        soup = BeautifulSoup(c, 'lxml')
         if soup.find('h1') != None:
             return soup.find('h1').get_text()
         elif 'Facebook' in soup.title.get_text():
