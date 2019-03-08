@@ -50,11 +50,11 @@ def get_header(soup):
         return soup.find('title').get_text()
     elif soup.find('body') != None:
         s = soup.findChildren('body')[0].get_text()
-        header = re.sub('\s+', '', s)
+        header = re.sub('\n|\t', '', s)
         return header[0:48]
     else:
         s = soup.get_text()
-        header = re.sub('\s+', '', s)
+        header = re.sub('\n|\t', '', s)
         return header[0:48]
 
 
