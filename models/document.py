@@ -3,7 +3,6 @@ import requests
 import lxml
 import time
 
-
 class Document:
 
     def __init__(self, url):
