@@ -11,11 +11,12 @@ import pprint
 import json
 
 Index = dict()
+Header = dict()
 
 pp = pprint.PrettyPrinter()
 
 def build_index():
-    global Index
+    global Index, Header
     tokenizer = Tokenizer()
     for subdir in os.listdir(config.RAW_WEBPAGES):
         full_subdir = os.path.join(config.RAW_WEBPAGES, subdir)
@@ -24,21 +25,27 @@ def build_index():
             print("Subdirectory: ", subdir)
             for _file in tqdm(to_parse):
                 filename = "/".join(_file.split("/")[1:])
-                parsed_txt = parse(_file)
-                token_counter = tokenizer.counter_tokenize(parsed_txt)
+                header, txt = parse(_file)
+
+                Header[filename] = header
+                token_counter = tokenizer.counter_tokenize(txt)
                 for tok in token_counter:
                     if tok not in Index:
                         Index[tok] = { filename : token_counter[tok]}
                     else:
                         Index[tok][filename] = token_counter[tok]
-
     save_index()
+    save_header()
 
+def save_header():
+    with open(config.HEADER_PATH, 'w') as f:
+        json.dump(Header, f, sort_keys=True, indent=4)
+    print("[Saved Header succesfully on {}]".format(config.HEADER_PATH))                
 
 def save_index():
-    with open(config.INDEX_PATH, 'w') as j:
-        json.dump(Index, j, sort_keys=True, indent=4)
-    print("[Saved index succesfully on {}]".format(config.INDEX_PATH))
+    with open(config.INDEX_PATH, 'w') as f:
+        json.dump(Index, f, sort_keys=True, indent=4)
+    print("[Saved Index succesfully on {}]".format(config.INDEX_PATH))
 
 
 

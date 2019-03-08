@@ -11,7 +11,8 @@ pp = pprint.PrettyPrinter()
 
 app = Flask(__name__)
 
-index = dict()
+Index = dict()
+Header = dict()
 bookkeeping = dict()
 
 search_input = ''
@@ -28,7 +29,7 @@ tokenizer = Tokenizer()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global search_input, index, bookkeeping, total_tokens, total_links
+    global search_input, Index, bookkeeping, total_tokens, total_links
 
     if request.method == 'POST' and request.form['search_input'] != '':
         search_input = request.form['search_input']
@@ -41,7 +42,7 @@ def index():
     pagination_links = get_results(offset=offset, per_page=per_page)
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
 
-    return render_template('index.html',search=search_input,
+    return render_template('Index.html',search=search_input,
                            links=total_links, tokens=total_tokens,
                            all_tokens=N_tokens, all_documents=N_documents,
                            results=pagination_links, per_page=per_page,
@@ -63,9 +64,9 @@ def run_search(search_input):
         processed_query = tokenizer.tokenize_query(search_input)
         results = set()
         for query in processed_query:
-            total_links += len(index[query])
-            total_tokens += sum([count for count in index[query].values()])
-            tfidf_scores = [(k, tfidf(v, len(index[query]) ) ) for k, v in index[query].items()]
+            total_links += len(Index[query])
+            total_tokens += sum([count for count in Index[query].values()])
+            tfidf_scores = [(k, tfidf(v, len(Index[query]) ) ) for k, v in Index[query].items()]
             results.add((i for i in tfidf_scores))
         total_results = [bookkeeping[u] for u, v in sorted(tfidf_scores, key=lambda x: x[1], reverse=True)][:config.TOP_N_results]
     except KeyError:
@@ -73,18 +74,21 @@ def run_search(search_input):
         return []
 
 
-def load_index():
-    global index, bookkeeping, N_documents, N_tokens
+def load_Index():
+    global Index, bookkeeping, N_documents, N_tokens
     with open(config.INDEX_PATH, 'r') as data:
-        index = json.load(data)
+        Index = json.load(data)
+
+    with open(config.HEADER_PATH, 'r') as data:
+        Header = json.load(data)
 
     with open(config.BOOKKEEPING, 'r') as data:
         bookkeeping = json.load(data)
 
     N_documents = len(bookkeeping)
-    N_tokens = len(index)
+    N_tokens = len(Index)
 
 
 if __name__ == '__main__':
-    load_index()
+    load_Index()
     app.run(debug=True)
