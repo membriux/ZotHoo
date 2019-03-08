@@ -42,14 +42,17 @@ def parse(_file) -> str:
     return header, all_text
 
 def get_header(soup):
+    header = ''
     if soup.find('h1') != None:
         return soup.find('h1').get_text()
     elif soup.find('title') != None and 'Facebook' in soup.find('title').get_text():
         return soup.find('title').get_text()
     elif soup.find('body') != None:
-        return soup.findChildren('body')[0].get_text().strip()[0:48] + '...'
+        header = re.sub('\s+', '', soup.findChildren('body')[0].get_text())
+        return header[0:48]
     else:
-        return soup.get_text().strip()[0:40]
+        header = re.sub('\s+', '', soup.findChildren('body')[0].get_text())
+        return header[0:48]
 
 
 
