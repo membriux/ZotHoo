@@ -33,7 +33,7 @@ def parse(_file) -> str:
 
             all_text += soup.get_text()
             all_text = remove_invalids(all_text)
-            
+
     except Exception as e:
         print('invalid: ', _file)
         invalid_files.append(_file)
@@ -42,10 +42,13 @@ def parse(_file) -> str:
     return header, all_text
 
 def get_header(soup):
+        result = requests.get('http://' + self.url)
+        c = result.content
+        soup = BeautifulSoup(c, 'lxml')
         if soup.find('h1') != None:
             return soup.find('h1').get_text()
-        elif 'Facebook' in soup.title.get_text():
-            return soup.title.get_text()
+        elif soup.find('title') != None and 'Facebook' in soup.find('title').get_text():
+            return soup.find('title').get_text()
         else:
             return soup.findChildren('body')[0].get_text()[0:48] + '...'
 
