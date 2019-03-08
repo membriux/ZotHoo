@@ -1,5 +1,3 @@
-
-
 import config
 import os
 from bs4 import BeautifulSoup as bs
@@ -33,7 +31,7 @@ def parse(_file) -> str:
                 soup.find_all(tag)
 
             all_text += soup.get_text()
-            all_text = remove_invalids(all_text)
+            all_text = remove_invalids(all_text).strip()
 
     except Exception as e:
         print('invalid: ', _file)
