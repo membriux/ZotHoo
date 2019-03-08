@@ -10,7 +10,7 @@ Search results are ranked using tf_idf scores and are displayed by showing the h
 
 ## Video Walkthrough/Example
 
-![Walkthrough Video](https://github.com/membriux/ZotHoo/blob/master/walkthrough.mov)
+![Walkthrough Video](https://github.com/membriux/ZotHoo/blob/master/walkthrough.gif)
 
 ## Built With
 
